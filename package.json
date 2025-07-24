@@ -1,0 +1,16 @@
+{
+  "name": "animal-rescue-backend",
+  "version": "1.0.0",
+  "description": "流浪动物救助小程序后端API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
