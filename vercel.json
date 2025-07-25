@@ -3,6 +3,26 @@
   "buildCommand": "echo 'No build required for API-only project'",
   "outputDirectory": ".",
   "installCommand": "npm install",
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ],
   "functions": {
     "api/**/*.js": {
       "runtime": "nodejs22.x"
