@@ -1,4 +1,5 @@
-export default async function handler(req, res) {
+// api/forum.js - 修正版本
+module.exports = async function handler(req, res) {
   // 处理 CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
