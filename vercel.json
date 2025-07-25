@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "echo 'No build required for API-only project'",
+  "buildCommand": "echo 'No build step'",
+  "installCommand": "echo 'No install step'",
   "outputDirectory": ".",
-  "installCommand": "npm install",
   "builds": [
     {
       "src": "index.html",
