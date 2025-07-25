@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/*.js": {
-      "maxDuration": 10
+      "maxDuration": 30
     }
   },
   "headers": [
@@ -14,7 +14,7 @@
           "value": "*"
         },
         {
-          "key": "Access-Control-Allow-Methods", 
+          "key": "Access-Control-Allow-Methods",
           "value": "GET, POST, PUT, DELETE, OPTIONS"
         },
         {
