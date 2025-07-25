@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'API project - no build required'",
+    "build": "echo 'No build required'",
     "deploy": "vercel --prod"
   },
   "dependencies": {
