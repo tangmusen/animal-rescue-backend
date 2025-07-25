@@ -41,12 +41,10 @@ async function handleGetProfiles(req, res) {
     limit = 10, 
     type, 
     status, 
-    search,
-    sortBy = 'createTime',
-    sortOrder = 'desc'
+    search 
   } = req.query;
 
-  // 模拟数据 - 实际使用时连接数据库
+  // 模拟数据
   const mockProfiles = [
     {
       id: '1',
@@ -63,8 +61,7 @@ async function handleGetProfiles(req, res) {
       rescueLocation: '上海市杨浦区',
       rescuer: '志愿者小林',
       photos: ['/images/cat1.jpg'],
-      createTime: '2025-06-28T10:00:00Z',
-      updateTime: '2025-07-23T15:30:00Z'
+      createTime: '2025-06-28T10:00:00Z'
     },
     {
       id: '2', 
@@ -81,8 +78,7 @@ async function handleGetProfiles(req, res) {
       rescueLocation: '北京市朝阳区',
       rescuer: '爱心救助团',
       photos: ['/images/dog1.jpg'],
-      createTime: '2025-06-25T14:20:00Z',
-      updateTime: '2025-07-20T09:15:00Z'
+      createTime: '2025-06-25T14:20:00Z'
     }
   ];
 
@@ -101,29 +97,11 @@ async function handleGetProfiles(req, res) {
     const searchLower = search.toLowerCase();
     filteredProfiles = filteredProfiles.filter(p => 
       p.name.toLowerCase().includes(searchLower) ||
-      p.rescueLocation.toLowerCase().includes(searchLower) ||
-      p.rescuer.toLowerCase().includes(searchLower)
+      p.rescueLocation.toLowerCase().includes(searchLower)
     );
   }
 
-  // 排序逻辑
-  filteredProfiles.sort((a, b) => {
-    let aVal = a[sortBy];
-    let bVal = b[sortBy];
-    
-    if (sortBy.includes('Time')) {
-      aVal = new Date(aVal);
-      bVal = new Date(bVal);
-    }
-    
-    if (sortOrder === 'desc') {
-      return bVal > aVal ? 1 : -1;
-    } else {
-      return aVal > bVal ? 1 : -1;
-    }
-  });
-
-  // 分页逻辑
+  // 分页
   const startIndex = (page - 1) * limit;
   const endIndex = startIndex + parseInt(limit);
   const paginatedProfiles = filteredProfiles.slice(startIndex, endIndex);
@@ -136,16 +114,7 @@ async function handleGetProfiles(req, res) {
         page: parseInt(page),
         limit: parseInt(limit),
         total: filteredProfiles.length,
-        totalPages: Math.ceil(filteredProfiles.length / limit),
-        hasNext: endIndex < filteredProfiles.length,
-        hasPrev: page > 1
-      },
-      filters: {
-        type,
-        status,
-        search,
-        sortBy,
-        sortOrder
+        totalPages: Math.ceil(filteredProfiles.length / limit)
       }
     }
   });
@@ -155,7 +124,6 @@ async function handleGetProfiles(req, res) {
 async function handleCreateProfile(req, res) {
   const profileData = req.body;
   
-  // 验证必填字段
   const requiredFields = ['name', 'type', 'rescueDate', 'rescueLocation'];
   const missingFields = requiredFields.filter(field => !profileData[field]);
   
@@ -163,22 +131,15 @@ async function handleCreateProfile(req, res) {
     return res.status(400).json({
       success: false,
       error: '缺少必填字段',
-      missingFields,
-      requiredFields
+      missingFields
     });
   }
 
-  // 生成新档案
   const newProfile = {
     id: generateId(),
     ...profileData,
-    createTime: new Date().toISOString(),
-    updateTime: new Date().toISOString(),
-    status: 'active'
+    createTime: new Date().toISOString()
   };
-
-  // 这里应该保存到数据库
-  // await saveToDatabase(newProfile);
 
   return res.status(201).json({
     success: true,
@@ -198,15 +159,6 @@ async function handleUpdateProfile(req, res) {
       error: '缺少档案ID'
     });
   }
-
-  // 这里应该从数据库查找并更新
-  // const existingProfile = await findById(id);
-  // if (!existingProfile) {
-  //   return res.status(404).json({
-  //     success: false,
-  //     error: '档案不存在'
-  //   });
-  // }
 
   const updatedProfile = {
     id,
@@ -232,15 +184,6 @@ async function handleDeleteProfile(req, res) {
     });
   }
 
-  // 这里应该从数据库删除
-  // const deleted = await deleteFromDatabase(id);
-  // if (!deleted) {
-  //   return res.status(404).json({
-  //     success: false,
-  //     error: '档案不存在'
-  //   });
-  // }
-
   return res.status(200).json({
     success: true,
     message: '档案删除成功',
@@ -248,7 +191,7 @@ async function handleDeleteProfile(req, res) {
   });
 }
 
-// 生成唯一ID
+// 生成ID
 function generateId() {
   const now = new Date();
   const year = now.getFullYear();
