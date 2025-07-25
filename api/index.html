@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动物救助 API 服务</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .api-endpoint {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .api-endpoint h3 {
+            margin: 0 0 10px 0;
+            color: #28a745;
+        }
+        .api-endpoint p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .endpoint-url {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .status {
+            text-align: center;
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐾 动物救助 API 服务</h1>
+        <div class="status">✅ API 服务正常运行</div>
+        
+        <div class="api-endpoint">
+            <h3>📋 论坛 API</h3>
+            <p>管理救助论坛的帖子</p>
+            <div class="endpoint-url">GET /api/forum</div>
+        </div>
+
+        <div class="api-endpoint">
+            <h3>📍 定位 API</h3>
+            <p>获取地理位置信息</p>
+            <div class="endpoint-url">POST /api/location</div>
+        </div>
+
+        <div class="api-endpoint">
+            <h3>📄 档案 API</h3>
+            <p>管理动物救助档案</p>
+            <div class="endpoint-url">GET /api/profiles</div>
+        </div>
+
+        <div class="api-endpoint">
+            <h3>📸 上传 API</h3>
+            <p>处理文件上传</p>
+            <div class="endpoint-url">POST /api/upload</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #666;">
+            <p>部署时间: <span id="deploy-time"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('deploy-time').textContent = new Date().toLocaleString('zh-CN');
+    </script>
+</body>
+</html>
