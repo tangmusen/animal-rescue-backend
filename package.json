@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "流浪动物救助小程序后端API",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "deploy": "vercel"
+    "deploy": "vercel --prod",
+    "build": "echo 'No build step required'"
   },
   "dependencies": {
     "axios": "^1.6.0"
