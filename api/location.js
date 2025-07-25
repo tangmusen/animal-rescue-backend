@@ -1,6 +1,7 @@
-import axios from 'axios';
+// api/location.js - 修正版本
+const axios = require('axios');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // 处理 CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
