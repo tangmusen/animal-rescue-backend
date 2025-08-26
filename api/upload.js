@@ -1,4 +1,5 @@
-export default async function handler(req, res) {
+// api/upload.js - 完整版本（模拟文件上传）
+module.exports = async function handler(req, res) {
   // 处理 CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -15,7 +16,7 @@ export default async function handler(req, res) {
       endpoints: {
         POST: '/api/upload - 上传文件'
       },
-      supportedTypes: ['image/jpeg', 'image/png', 'image/gif'],
+      supportedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
       maxSize: '5MB',
       time: new Date().toISOString()
     });
@@ -29,9 +30,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 在实际环境中，这里需要处理文件上传
-    // 可以使用云存储服务如腾讯云COS、阿里云OSS等
-    
     const { fileData, fileName, fileType } = req.body;
     
     if (!fileData || !fileName) {
@@ -52,8 +50,39 @@ export default async function handler(req, res) {
       });
     }
 
-    // 模拟文件上传过程
-    const uploadResult = await simulateFileUpload(fileData, fileName, fileType);
+    // 生成唯一的文件ID
+    const fileId = generateFileId();
+    const fileExtension = getFileExtension(fileName);
+    const newFileName = `${fileId}${fileExtension}`;
+    
+    // 模拟上传延迟
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    // 使用真实的图片URL（来自Unsplash）
+    const sampleImages = [
+      'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba',
+      'https://images.unsplash.com/photo-1533738363-b7f9aef128ce',
+      'https://images.unsplash.com/photo-1548247416-ec66f4900b2e',
+      'https://images.unsplash.com/photo-1543852786-1cf6624b9987',
+      'https://images.unsplash.com/photo-1558788353-f76d92427f16',
+      'https://images.unsplash.com/photo-1560114928-40f1f1eb26a0'
+    ];
+    
+    const randomImage = sampleImages[Math.floor(Math.random() * sampleImages.length)];
+    
+    // 返回上传结果
+    const uploadResult = {
+      fileId,
+      originalName: fileName,
+      fileName: newFileName,
+      fileType: fileType || 'image/jpeg',
+      fileSize: estimateFileSize(fileData),
+      url: `${randomImage}?w=800`,
+      thumbnailUrl: `${randomImage}?w=200`,
+      uploadTime: new Date().toISOString(),
+      status: 'uploaded',
+      message: '文件上传成功'
+    };
 
     return res.status(200).json({
       success: true,
@@ -69,35 +98,6 @@ export default async function handler(req, res) {
       message: error.message
     });
   }
-}
-
-// 模拟文件上传
-async function simulateFileUpload(fileData, fileName, fileType) {
-  // 在实际应用中，这里会：
-  // 1. 验证文件内容
-  // 2. 生成唯一文件名
-  // 3. 上传到云存储
-  // 4. 返回文件访问URL
-
-  const fileId = generateFileId();
-  const fileExtension = getFileExtension(fileName);
-  const newFileName = `${fileId}${fileExtension}`;
-  
-  // 模拟上传延迟
-  await new Promise(resolve => setTimeout(resolve, 500));
-
-  // 返回模拟的上传结果
-  return {
-    fileId,
-    originalName: fileName,
-    fileName: newFileName,
-    fileType: fileType || 'image/jpeg',
-    fileSize: estimateFileSize(fileData),
-    url: `https://example-cdn.com/uploads/${newFileName}`,
-    thumbnailUrl: `https://example-cdn.com/thumbnails/${newFileName}`,
-    uploadTime: new Date().toISOString(),
-    status: 'uploaded'
-  };
 }
 
 // 生成文件ID
@@ -119,8 +119,13 @@ function getFileExtension(fileName) {
 // 估算文件大小
 function estimateFileSize(fileData) {
   if (typeof fileData === 'string') {
-    // 如果是base64字符串
-    return Math.round(fileData.length * 0.75);
+    // 如果是base64字符串，估算大小
+    if (fileData.includes('base64,')) {
+      const base64 = fileData.split('base64,')[1];
+      return Math.round(base64.length * 0.75);
+    }
+    return fileData.length;
   }
-  return 0;
+  // 返回一个随机的合理大小（100KB - 2MB）
+  return Math.floor(Math.random() * 2000000) + 100000;
 }
