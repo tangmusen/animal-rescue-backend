@@ -1,14 +1,12 @@
 {
   "version": 2,
-  "buildCommand": false,
-  "outputDirectory": ".",
   "routes": [
     {
       "src": "/admin.html",
       "dest": "/admin.html"
     },
     {
-      "src": "/index.html",
+      "src": "/index.html", 
       "dest": "/index.html"
     },
     {
